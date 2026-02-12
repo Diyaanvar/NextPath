@@ -1,0 +1,28 @@
+# Python / Django
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.log
+*.sqlite3
+
+# Virtualenvs
+.venv/
+env/
+venv/
+
+# Django static & media (do not push large files)
+staticfiles/
+media/
+course_videos/
+video/
+
+# Env files
+.env
+*.env
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
