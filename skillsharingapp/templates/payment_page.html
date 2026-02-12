@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Payment - {{ course.title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        .navbar {
+            background-color: #1a1a1a;
+            padding: 1rem 2rem;
+        }
+        .payment-card {
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .payment-header {
+            background: linear-gradient(135deg, #0d6efd 0%, #004dc0 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .qr-section {
+            background-color: #fff;
+            border: 2px dashed #dee2e6;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .btn-submit {
+            background-color: #0d6efd;
+            border: none;
+            padding: 12px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+        .btn-submit:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        .course-info-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark mb-5">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="/">🎓 EduTech AI</a>
+    </div>
+</nav>
+
+<div class="container mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card payment-card shadow-lg">
+                <div class="payment-header">
+                    <span class="course-info-badge mb-2 d-inline-block">Enrollment Step 2 of 2</span>
+                    <h3 class="fw-bold mb-0">Secure Payment</h3>
+                </div>
+                
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <p class="text-muted mb-1">You are enrolling in</p>
+                        <h5 class="fw-bold text-primary">{{ course.title }}</h5>
+                        <h2 class="fw-bold mt-2">₹{{ course.price }}</h2>
+                    </div>
+
+                    <div class="qr-section text-center">
+                        <p class="small text-muted mb-2">Scan QR code via Google Pay / PhonePe / Paytm</p>
+                        <img src="{% static 'images/gpay_qr.png' %}" alt="Payment QR Code" class="img-fluid mb-3" style="max-width: 180px;">
+                        <p class="mb-0 fw-bold">UPI ID: <span class="text-primary">demo@okaxis</span></p>
+                    </div>
+
+                    <form action="{% url 'process_payment' course.id %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="transaction_id" class="form-label small fw-bold">Transaction ID / UTR Number</label>
+                            <input type="text" name="transaction_id" id="transaction_id" class="form-control" placeholder="12-digit number" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="screenshot" class="form-label small fw-bold">Upload Payment Screenshot</label>
+                            <input type="file" name="screenshot" id="screenshot" class="form-control" accept="image/*" required>
+                            <div class="form-text mt-1" style="font-size: 0.75rem;">Clear screenshot showing Amount and Transaction ID.</div>
+                        </div>
+
+                        <button type="submit" class="btn btn-submit btn-primary w-100 shadow-sm">
+                            Submit for Verification
+                        </button>
+                    </form>
+                    
+                    <div class="text-center mt-4">
+                        <p class="small text-muted italic">Verification usually takes 2-4 hours. You will receive access once confirmed.</p>
+                        <a href="{% url 'process_payment' course.id %}" class="text-decoration-none small text-secondary">← Cancel and go back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

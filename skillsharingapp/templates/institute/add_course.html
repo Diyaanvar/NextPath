@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 600px;">
+    <div class="card shadow">
+        <div class="card-header bg-success text-white">
+            <h4><i class="fas fa-plus-circle me-2"></i>Create New Course</h4>
+        </div>
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label>Course Title</label>
+                    {{ form.title }}
+                </div>
+                
+                <div class="mb-3">
+                    <label>Description</label>
+                    {{ form.description }}
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label>Price ($)</label>
+                        {{ form.price }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label>Category/Tag</label>
+                        {{ form.skill_tag }}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label>Thumbnail Image</label>
+                    {{ form.thumbnail }}
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">Next: Upload Videos</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

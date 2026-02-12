@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="mb-4">
+                <h1 class="fw-bold">{{ course.title }}</h1>
+                <p class="text-muted">
+                    <i class="fas fa-chalkboard-teacher me-2"></i> Created by {{ course.institute }}
+                </p>
+                {% if course.thumbnail %}
+                    <img src="{{ course.thumbnail.url }}" class="img-fluid rounded shadow-sm w-100 mb-4" style="max-height: 400px; object-fit: cover;" alt="{{ course.title }}">
+                {% endif %}
+            </div>
+
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-white fw-bold">About this Course</div>
+                <div class="card-body">
+                    <p class="card-text">{{ course.description }}</p>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white fw-bold">Course Curriculum</div>
+                <ul class="list-group list-group-flush">
+                    {% for lesson in course.lessons.all %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <i class="fas fa-play-circle text-primary me-2"></i>
+                                <strong>Lesson {{ lesson.order }}:</strong> {{ lesson.title }}
+                            </div>
+                            <span class="badge bg-secondary">Locked</span>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item text-muted">No lessons uploaded yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow border-0 sticky-top" style="top: 100px; z-index: 1;">
+                <div class="card-body p-4">
+                    <h2 class="fw-bold text-success mb-3">
+                        {% if course.price > 0 %}
+                            ${{ course.price }}
+                        {% else %}
+                            Free
+                        {% endif %}
+                    </h2>
+                    
+                    <div class="d-grid gap-2">
+                       {% if is_enrolled %}
+                        <a href="{% url 'course_player' course.id %}" class="btn btn-success btn-lg">
+                            Go to Course
+                        </a>
+                    {% else %}
+                        <a href="{% url 'process_payment' course.id %}" class="btn btn-primary btn-lg">
+                            Enroll Now
+                        </a>
+                    {% endif %}
+                    </div>
+
+                    <hr>
+
+                    <ul class="list-unstyled text-muted mb-0">
+                        <li class="mb-2"><i class="fas fa-video me-2"></i> {{ course.lessons.count }} Lessons</li>
+                        <li class="mb-2"><i class="fas fa-clock me-2"></i> Lifetime Access</li>
+                        <li class="mb-2"><i class="fas fa-mobile-alt me-2"></i> Access on Mobile</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

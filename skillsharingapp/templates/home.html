@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillSharing</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+
+/* GLOBAL */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+    font-family:"Poppins", sans-serif;
+    background:#f7f9fa;
+    color:#222;
+}
+
+/* NAVBAR */
+.navbar{
+    width:100%;
+    padding:18px 60px;
+    background:#7ed6c6;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom-left-radius:70px;
+    border-bottom-right-radius:70px;
+}
+.logo{
+    font-size:28px;
+    font-weight:600;
+    color:#003b40;
+}
+.nav-links{
+    list-style:none;
+}
+.nav-links li{
+    display:inline-block;
+    margin-left:25px;
+}
+.nav-links a{
+    text-decoration:none;
+    color:#003b40;
+    font-weight:500;
+    font-size:16px;
+}
+
+/* HERO */
+.hero{
+    padding:110px 20px 80px;
+    text-align:center;
+    background:white;
+}
+.hero h1{
+    font-size:48px;
+    font-weight:700;
+}
+.hero p{
+    margin-top:12px;
+    font-size:18px;
+    color:#555;
+}
+.btn{
+    display:inline-block;
+    margin-top:25px;
+    background:#7ed6c6;
+    padding:14px 28px;
+    border-radius:8px;
+    color:#003b40;
+    font-weight:600;
+    text-decoration:none;
+    transition: all 0.3s ease;
+}
+
+/* FEATURES */
+.features{
+    padding:50px 40px;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+}
+.feature-box{
+    width:30%;
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    margin-bottom:25px;
+    transition:0.3s;
+}
+.feature-box:hover{
+    transform:translateY(-6px);
+}
+.feature-icon{
+    font-size:48px;
+    color:#0cbaba;
+}
+.feature-box h3{
+    margin-top:10px;
+    font-size:22px;
+    color:#003b40;
+}
+.feature-box p{
+    margin-top:8px;
+    color:#666;
+}
+
+/* Center alignment */
+.feature-box{text-align:center;}
+
+/* Hide buttons initially */
+#online-btn, #offline-btn, #learn-btn, #mentors-btn {
+    display: none;
+}
+
+/* Mentor list section */
+.mentors-section{
+    display:none;
+    padding:40px;
+    background:white;
+    margin:30px;
+    border-radius:12px;
+}
+.mentor-card{
+    padding:15px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    margin-bottom:15px;
+}
+
+/* FOOTER */
+footer{
+    margin-top:40px;
+    padding:20px;
+    text-align:center;
+    background:white;
+    color:#444;
+}
+
+.feature-box a.btn:hover {
+    background-color:#45a049;
+    transform:scale(1.05);
+}
+.feature-box a.btn:active {
+    background-color:#3e8e41;
+    transform:scale(0.95);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="logo">SkillSharing</div>
+    <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="/profile/">Profile</a></li>
+        <li><a href="/enter-skills/">Skillsets</a></li>
+        <li><a href="/logout/">Logout</a></li>
+    </ul>
+</nav>
+
+<!-- Hero -->
+
+
+<!-- Features -->
+<section class="features">
+
+    <div class="feature-box" onmouseover="showOnline()" onmouseout="hideOnline()">
+        <span class="material-icons feature-icon">bolt</span>
+        <h3>Courses</h3>
+        <a id="online-btn" href="{% url 'userlistcourses' %}" class="btn">Get Started</a>
+    </div>
+
+
+    <div class="feature-box" onmouseover="showOnline()" onmouseout="hideOnline()">
+        <span class="material-icons feature-icon">bolt</span>
+        <h3>Course Recommendations</h3>
+        <a id="online-btn" href="{% url 'userlistcourses' %}" class="btn">Get Started</a>
+    </div>
+
+
+    <!-- Mentors -->
+    <div class="feature-box" onmouseover="showMentors()" onmouseout="hideMentors()">
+        <span class="material-icons feature-icon">people</span>
+        <h3>Chatbot</h3>
+        <p>Connect with experienced mentors.</p>
+        <a id="mentors-btn" href="/chatbot/" class="btn" onclick="toggleMentors()">Get Start Now</a>
+    </div>
+
+
+
+
+        <div class="feature-box" onmouseover="showMentors()" onmouseout="hideMentors()">
+        <span class="material-icons feature-icon">people</span>
+        <h3>Resume Maker</h3>
+        <p>Connect with experienced mentors.</p>
+        <a id="mentors-btn" href="" class="btn" onclick="toggleMentors()">View Mentors</a>
+    </div>
+</section>
+
+<!-- Mentor Listing -->
+<section id="mentors-section" class="mentors-section">
+    <h2>Available Mentors</h2>
+
+    {% for mentor in mentors %}
+        <div class="mentor-card">
+            <h3>{{ mentor.name }}</h3>
+            <p><strong>Subject:</strong> {{ mentor.subject }}</p>
+        </div>
+    {% empty %}
+        <p>No mentors available.</p>
+    {% endfor %}
+</section>
+
+<footer>
+    © 2025 SkillSharing — All rights reserved.
+</footer>
+
+<!-- Scripts -->
+<script>
+function showOnline(){document.getElementById("online-btn").style.display="inline-block";}
+function hideOnline(){document.getElementById("online-btn").style.display="none";}
+
+function showOffline(){document.getElementById("offline-btn").style.display="inline-block";}
+function hideOffline(){document.getElementById("offline-btn").style.display="none";}
+
+function showLearn(){document.getElementById("learn-btn").style.display="inline-block";}
+function hideLearn(){document.getElementById("learn-btn").style.display="none";}
+
+function showMentors(){document.getElementById("mentors-btn").style.display="inline-block";}
+function hideMentors(){document.getElementById("mentors-btn").style.display="none";}
+
+function toggleMentors(){
+    const section=document.getElementById("mentors-section");
+    section.style.display = section.style.display==="block" ? "none" : "block";
+    section.scrollIntoView({behavior:"smooth"});
+}
+</script>
+
+</body>
+</html>

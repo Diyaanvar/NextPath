@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Online Class</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" 
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Edit Online Class</h4>
+        </div>
+
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- Subject -->
+                <div class="form-group">
+                    <label>Subject</label>
+                    <input type="text" name="subject" value="{{ edit.subject }}" 
+                           class="form-control" required>
+                </div>
+
+                <!-- Title -->
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" name="title" value="{{ edit.title }}" 
+                           class="form-control" required>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description" class="form-control" rows="4" required>
+                        {{ edit.description }}
+                    </textarea>
+                </div>
+
+                <!-- Date -->
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" name="date" value="{{ edit.date }}" 
+                           class="form-control" required>
+                </div>
+
+                <!-- Time -->
+                <div class="form-group">
+                    <label>Time</label>
+                    <input type="time" name="time" value="{{ edit.time }}" 
+                           class="form-control" required>
+                </div>
+
+                <!-- Instructor -->
+                <div class="form-group">
+                    <label>Instructor</label>
+                    <input type="text" name="instructor" value="{{ edit.instructor }}" 
+                           class="form-control" required>
+                </div>
+
+                <!-- Duration -->
+                <div class="form-group">
+                    <label>Duration (e.g., 1 hour)</label>
+                    <input type="text" name="duration" value="{{ edit.duration }}" 
+                           class="form-control" required>
+                </div>
+
+                <!-- Platform -->
+                <div class="form-group">
+                    <label>Platform (Zoom/Google Meet/etc.)</label>
+                    <input type="text" name="platform" value="{{ edit.platform }}" 
+                           class="form-control" required>
+                </div>
+
+                <!-- Link -->
+                <div class="form-group">
+                    <label>Online Class Link</label>
+                    <input type="url" name="link" value="{{ edit.link }}" 
+                           class="form-control" required>
+                </div>
+
+                <!-- Current Materials -->
+                <div class="form-group">
+                    <label>Current Materials:</label><br>
+                    {% if edit.materials %}
+                        <a href="{{ edit.materials.url }}" target="_blank"
+                           class="btn btn-sm btn-info">View Uploaded File</a>
+                    {% else %}
+                        <p>No materials uploaded.</p>
+                    {% endif %}
+                </div>
+
+                <!-- New Materials -->
+                <div class="form-group">
+                    <label>Upload New Materials (optional)</label>
+                    <input type="file" name="materials" class="form-control-file">
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="btn btn-success btn-block">Update</button>
+
+                <!-- Cancel -->
+                <a href="{% url 'myonlineclasses' %}" 
+                   class="btn btn-secondary btn-block">Cancel</a>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

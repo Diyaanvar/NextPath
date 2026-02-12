@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline Classes</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 40px 0;
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(to right, #95d0ca, #7bbcb6);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 35px;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 14px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+            border: 2px solid #95d0ca;
+            margin: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2e4947;
+            font-weight: 600;
+            font-size: 26px;
+        }
+
+        label {
+            font-weight: 500;
+            margin-top: 12px;
+            display: block;
+            color: #355d5b;
+            font-size: 14px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 11px;
+            margin-top: 5px;
+            border-radius: 7px;
+            border: 1px solid #8abdb8;
+            background: #f8fefe;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #95d0ca;
+            box-shadow: 0 0 8px rgba(149, 208, 202, 0.6);
+        }
+
+        /* Drag & Drop Box */
+        .drop-zone {
+            margin-top: 10px;
+            padding: 30px;
+            background: #f0fdfd;
+            border: 2px dashed #8abdb8;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            color: #2e4947;
+            transition: 0.3s;
+        }
+
+        .drop-zone.drag {
+            background: #e5f9f7;
+            border-color: #5c9e98;
+        }
+
+        video {
+            width: 100%;
+            margin-top: 10px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #d9f2f0;
+            border-radius: 20px;
+            margin-top: 15px;
+            display: none;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            width: 0%;
+            background: #95d0ca;
+            transition: 0.4s;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 13px;
+            background: #95d0ca;
+            color: white;
+            border: none;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #6fb5af;
+        }
+
+        /* Hide default file input */
+        #Video {
+            display: none;
+        }
+
+    </style>
+
+    <script>
+        function $(id) {
+            return document.getElementById(id);
+        }
+
+        function showFileName(file) {
+            $("file-name").textContent = file ? file.name : "No file selected";
+
+            // Show video preview
+            if (file) {
+                const video = $("preview-video");
+                video.src = URL.createObjectURL(file);
+                video.style.display = "block";
+            }
+        }
+
+        window.onload = () => {
+            const dropZone = $("drop-zone");
+            const fileInput = $("Video");
+
+            dropZone.addEventListener("click", () => fileInput.click());
+
+            dropZone.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                dropZone.classList.add("drag");
+            });
+
+            dropZone.addEventListener("dragleave", () => {
+                dropZone.classList.remove("drag");
+            });
+
+            dropZone.addEventListener("drop", (e) => {
+                e.preventDefault();
+                dropZone.classList.remove("drag");
+
+                const file = e.dataTransfer.files[0];
+                fileInput.files = e.dataTransfer.files;
+
+                showFileName(file);
+            });
+
+            fileInput.addEventListener("change", () => {
+                const file = fileInput.files[0];
+
+                // File size limit: 500MB
+                if (file.size > 500 * 1024 * 1024) {
+                    alert("File size must be less than 500MB.");
+                    fileInput.value = "";
+                    return;
+                }
+
+                showFileName(file);
+            });
+        };
+
+        function startUpload() {
+            // Fake progress animation (useful when server takes long time)
+            let progress = 0;
+            const bar = $("progress");
+            const barContainer = $("progress-bar");
+
+            barContainer.style.display = "block";
+
+            const interval = setInterval(() => {
+                if (progress < 90) {
+                    progress += 5;
+                    bar.style.width = progress + "%";
+                }
+            }, 200);
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h2>OFFLINE CLASSES</h2>
+
+        <form method="POST" enctype="multipart/form-data" onsubmit="startUpload()">
+            {% csrf_token %}
+
+            <label>Subject</label>
+            <input type="text" name="subject" required>
+
+            <label>Title</label>
+            <input type="text" name="title" required>
+
+            <label>Description (Optional)</label>
+            <textarea name="description" rows="3" placeholder="Short summary about the class"></textarea>
+
+
+            <label>Uploaded Date</label>
+            <input type="date" name="date" required>
+
+            <label>Upload Video</label>
+
+            <div id="drop-zone" class="drop-zone">
+                Drag & Drop Video Here <br> or Click to Select
+            </div>
+
+            <input type="file" id="Video" name="video" accept="video/*" required>
+
+            <div id="file-name">No file selected</div>
+
+            <video id="preview-video" controls></video>
+
+            <!-- Progress Bar -->
+            <div class="progress-bar" id="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+
+            <button type="submit">Confirm</button>
+        </form>
+    </div>
+</body>
+</html>

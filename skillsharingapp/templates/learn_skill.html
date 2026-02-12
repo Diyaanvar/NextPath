@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn a Skill</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="#">SkillSharing</a>
+  </div>
+</nav>
+
+<div class="container my-5">
+    <h1 class="text-center mb-4">Learn a Skill</h1>
+    <div class="row">
+        {% for skill in skills %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <span class="material-icons" style="font-size:48px; color:#0cbaba;">
+                        {{ skill.icon }}
+                    </span>
+                    <h5 class="card-title mt-3">{{ skill.name }}</h5>
+                    <p class="card-text">{{ skill.description }}</p>
+                    <a href="#" class="btn btn-primary mt-2">Learn More</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">No skills available yet.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+
+    <!-- Classy Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 40px 0;
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(to right, #95d0ca, #7bbcb6);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 35px;
+            width: 100%;
+            max-width: 420px;
+            border-radius: 14px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+            border: 2px solid #95d0ca;
+            margin: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2e4947;
+            font-weight: 600;
+            font-size: 26px;
+        }
+
+        form label {
+            font-weight: 500;
+            margin-top: 12px;
+            display: block;
+            color: #355d5b;
+            font-size: 14px;
+        }
+
+        form input,
+        form select {
+            width: 100%;
+            padding: 11px;
+            margin-top: 5px;
+            border-radius: 7px;
+            border: 1px solid #8abdb8;
+            background: #f8fefe;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        form input:focus,
+        form select:focus {
+            border-color: #95d0ca;
+            box-shadow: 0 0 8px rgba(149, 208, 202, 0.6);
+        }
+
+        /* ----------------------- */
+        /* Beautiful Upload Button */
+        /* ----------------------- */
+        .upload-wrapper {
+            margin-top: 10px;
+        }
+
+        .upload-btn {
+            display: inline-block;
+            background: #95d0ca;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 5px;
+            transition: background 0.3s ease;
+            text-align: center;
+            width: 100%;
+        }
+
+        .upload-btn:hover {
+            background: #6fb5af;
+        }
+
+        /* Hide the actual input */
+        #image {
+            display: none;
+        }
+
+        /* Show selected file name */
+        #file-name {
+            margin-top: 5px;
+            font-size: 13px;
+            color: #355d5b;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 13px;
+            background: #95d0ca;
+            color: white;
+            border: none;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #6fb5af;
+        }
+
+        a {
+            color: #2b6b68;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    <script>
+        function showFileName() {
+            const fileInput = document.getElementById("image");
+            const fileNameDisplay = document.getElementById("file-name");
+            fileNameDisplay.textContent = fileInput.files.length > 0 
+                ? fileInput.files[0].name 
+                : "No file selected";
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Register</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label>Name</label>
+            <input type="text" name="name" required>
+
+            <label>Email</label>
+            <input type="email" name="email" required>
+
+            <label>Password</label>
+            <input type="password" name="password" required>
+
+            <label>Confirm Password</label>
+            <input type="password" name="confirm_password" required>
+
+
+            <label>Gender</label>
+            <select name="gender" required>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </select>
+
+            <label>Phone</label>
+            <input type="text" name="phone" required>
+
+            <label>Date of Birth</label>
+            <input type="date" name="DOB" required>
+
+            <!-- Beautiful Upload Button -->
+            <label>Upload Image</label>
+            <div class="upload-wrapper">
+                <label for="image" class="upload-btn">Choose Image</label>
+                <input type="file" id="image" name="image" accept="image/*" onchange="showFileName()">
+                <div id="file-name">No file selected</div>
+            </div>
+
+            <label>State</label>
+            <select name="State" required>
+                <option value="K">Kerala</option>
+                <option value="J&K">Jammu & Kashmir</option>
+                <option value="P">Punjab</option>
+            </select>
+
+            <label>District</label>
+            <select name="District" required>
+                <option value="T">Thiruvananthapuram</option>
+                <option value="K">Kollam</option>
+                <option value="P">Pathanamthitta</option>
+                <option value="A">Alappuzha</option>
+                <option value="K">Kottayam</option>
+                <option value="I">Idukki</option>
+                <option value="E">Ernakulam</option>
+                <option value="TH">Thrissur</option>
+                <option value="P">Palakkad</option>
+                <option value="M">Malappuram</option>
+                <option value="KH">Kozhikode</option>
+                <option value="W">Wayanad</option>
+                <option value="KA">Kannur</option>
+                <option value="KS">Kasargod</option>
+            </select>
+
+            <button type="submit">Register</button>
+
+            <p style="margin-top: 12px; text-align: center;">
+                Already have an account?
+                <a href="/login/">Login here</a>
+            </p>
+        </form>
+    </div>
+</body>
+</html>

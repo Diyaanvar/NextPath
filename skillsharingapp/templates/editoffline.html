@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Offline Class</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Edit Offline Class</h4>
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label>Subject</label>
+                    <input type="text" name="subject" value="{{ edit.subject }}" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" name="title" value="{{ edit.title }}" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description" class="form-control" rows="4" required>{{ edit.description }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" name="date" value="{{ edit.date }}" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Current Video:</label><br>
+                    {% if edit.video %}
+                        <video width="300" controls>
+                            <source src="{{ edit.video.url }}" type="video/mp4">
+                        </video>
+                    {% else %}
+                        <p>No video uploaded.</p>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label>Upload New Video (optional)</label>
+                    <input type="file" name="video" class="form-control-file">
+                </div>
+
+                <button type="submit" class="btn btn-success btn-block">Update</button>
+                <a href="{% url 'myofflineclasses' %}" class="btn btn-secondary btn-block">Cancel</a>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

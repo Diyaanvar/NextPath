@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | SkillSharing</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        /* Background matching screenshot */
+        body {
+            min-height: 100vh;
+            background: #f7fefe;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Teal curved header like screenshot */
+        .top-curve {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 260px;
+            background: linear-gradient(135deg, #7ed6c8, #6ecfbe);
+            border-bottom-left-radius: 50%;
+            border-bottom-right-radius: 50%;
+            z-index: -1;
+        }
+
+        /* Glassy card matching style of Browse Topics cards */
+        .wrapper {
+            width: 420px;
+            padding: 35px 40px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.10);
+            animation: fadeIn 0.7s ease;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: 600;
+            font-size: 28px;
+            margin-bottom: 25px;
+            color: #1f1f1f;
+        }
+
+        label {
+            font-weight: 500;
+            display: block;
+            margin-top: 12px;
+            margin-bottom: 5px;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 40px 12px 14px;
+            border-radius: 10px;
+            border: 1.5px solid #dcdcdc;
+            outline: none;
+            font-size: 15px;
+            transition: 0.25s;
+        }
+
+        input:focus {
+            border-color: #6ecfbe;
+            box-shadow: 0 0 4px rgba(110,207,190,0.5);
+        }
+
+        .material-icons.visibility {
+            position: absolute;
+            right: 12px;
+            top: 10px;
+            color: #777;
+            cursor: pointer;
+        }
+
+        .remember {
+            margin: 14px 0;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px;
+            background: #6ecfbe;
+            border: none;
+            color: white;
+            font-size: 17px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        button:hover {
+            background: #59b8a7;
+        }
+
+        .error-box {
+            display: none;
+            background: rgba(255, 82, 82, 0.18);
+            color: #ff2d2d;
+            border-left: 4px solid red;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+        }
+
+        .bottom-text {
+            margin-top: 15px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .bottom-text a {
+            color: #6ecfbe;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="top-curve"></div>
+
+<div class="wrapper">
+    <form method="POST">
+        {% csrf_token %}
+
+        <h1>Login</h1>
+
+        <div class="error-box" id="errorBox">Invalid email or password!</div>
+
+        <label>Email</label>
+        <div class="input-group">
+            <input type="email" id="email" name="email" placeholder="Enter email">
+        </div>
+
+        <label>Password</label>
+        <div class="input-group">
+            <input type="password" id="password" name="password" placeholder="Enter password">
+            <span class="material-icons visibility" onclick="togglePassword()">visibility</span>
+        </div>
+
+        <div class="remember">
+            <input type="checkbox"> Remember Me
+        </div>
+
+        <button type="submit" onclick="return validateForm()">Login</button>
+
+        <div class="bottom-text">
+            Don't have an account?
+            <a href="/register/">Register first</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    function togglePassword() {
+        const pass = document.getElementById("password");
+        pass.type = pass.type === "password" ? "text" : "password";
+    }
+
+    function validateForm() {
+        const email = document.getElementById("email").value.trim();
+        const pass = document.getElementById("password").value.trim();
+
+        if (email === "" || pass === "") {
+            document.getElementById("errorBox").style.display = "block";
+            return false;
+        }
+        return true;
+    }
+</script>
+
+</body>
+</html>

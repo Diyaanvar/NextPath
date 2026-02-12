@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Edit Profile</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --theme: #95d0ca;   
+            --dark: #1a1f36;
+            --text: #333;
+        }
+
+        body{
+            margin:0;
+            font-family: "Segoe UI", Arial;
+            background:#f4f6fb;
+        }
+
+        /* HERO SECTION */
+        .hero{
+            width:100%;
+            height:200px;
+            background: linear-gradient(135deg, var(--theme), #6ab8b0);
+            display:flex;
+            align-items:center;
+            padding:40px;
+            color:white;
+        }
+
+        .hero h1{
+            font-size:36px;
+            margin:0;
+            font-weight:700;
+        }
+
+        /* MAIN CONTAINER */
+        .profile-container{
+            width:90%;
+            max-width:800px;
+            margin: -60px auto 40px; 
+        }
+
+        /* CARD */
+        .card{
+            background:white;
+            padding:35px;
+            border-radius:12px;
+            box-shadow:0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom:30px;
+            position:relative;
+        }
+
+        /* PROFILE IMAGE */
+        .profile-img-wrapper{
+            text-align:center;
+            margin-bottom:20px;
+        }
+
+        .profile-img-wrapper img{
+            width:120px;
+            height:120px;
+            border-radius:50%;
+            object-fit:cover;
+            border:5px solid white;
+            box-shadow:0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        /* REMOVE BUTTON */
+        .remove-btn {
+            margin-top: 12px;
+            background: #e74c3c;
+            color: white;
+            padding: 8px 14px;
+            font-size: 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .remove-btn:hover {
+            background: #c0392b;
+        }
+
+        /* FORM STYLES */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap:20px;
+        }
+
+        label {
+            font-weight:bold;
+            color:#333;
+        }
+
+        input, select {
+            padding:10px;
+            border-radius:6px;
+            border:1px solid #ccc;
+            font-size:16px;
+            width:100%;
+        }
+
+        /* SUBMIT BUTTON */
+        .save-btn{
+            background:var(--theme);
+            color:white;
+            padding:12px;
+            border-radius:10px;
+            text-align:center;
+            font-size:18px;
+            font-weight:bold;
+            border:none;
+            cursor:pointer;
+        }
+
+        .save-btn:hover{
+            background:#7dbbb4;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- HERO SECTION -->
+    <div class="hero">
+        <div>
+            <h1>Edit Your Profile</h1>
+            <p>Update your personal information and save changes.</p>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="profile-container">
+        <div class="card">
+
+            <!-- PROFILE IMAGE + REMOVE BUTTON -->
+            <div class="profile-img-wrapper">
+                {% if user.image %}
+                    <img src="{{ user.image.url }}" alt="profile">
+
+                    <!-- REMOVE BUTTON -->
+                    <button type="submit" form="profileForm" name="remove_image" value="true" class="remove-btn">
+                        <i class="fa-solid fa-trash"></i> Remove Photo
+                    </button>
+
+                {% else %}
+                    <img src="https://via.placeholder.com/120" alt="no image">              
+                {% endif %}
+            </div>
+
+            <!-- PROFILE FORM -->
+            <form id="profileForm" action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div>
+                    <label for="image">Profile Photo</label>
+                    <input type="file" id="image" name="image" accept="image/*">
+                </div>
+
+                <div>
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" value="{{ user.name }}" required>
+                </div>
+
+                <div>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="{{ user.email }}" required>
+                </div>
+
+                <div>
+                    <label for="phone">Phone</label>
+                    <input type="text" id="phone" name="phone" value="{{ user.phone }}" required>
+                </div>
+
+                <div>
+                    <label for="gender">Gender</label>
+                    <select id="gender" name="gender" required>
+                        <option value="Male" {% if user.gender == 'Male' %}selected{% endif %}>Male</option>
+                        <option value="Female" {% if user.gender == 'Female' %}selected{% endif %}>Female</option>
+                        <option value="Other" {% if user.gender == 'Other' %}selected{% endif %}>Other</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="dob">Date of Birth</label>
+                    <input type="date" id="dob" name="dob" value="{{ user.dob|date:'Y-m-d' }}">
+                </div>
+
+                <div>
+                    <label for="state">State</label>
+                    <input type="text" id="state" name="state" value="{{ user.state }}" required>
+                </div>
+
+                <div>
+                    <label for="district">District</label>
+                    <input type="text" id="district" name="district" value="{{ user.district }}" required>
+                </div>
+
+                <button type="submit" class="save-btn">
+                    <i class="fa-solid fa-floppy-disk"></i> Save Changes
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+</body>
+</html>
